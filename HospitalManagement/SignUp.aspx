@@ -25,6 +25,9 @@
         .navbar-brand {
             font-weight: bold;
         }
+        #error{
+            color:red;
+        }
     </style>
 </head>
 <body>
@@ -40,30 +43,34 @@
         <div class="card shadow p-4 text-center" style="width: 400px;">
             <h3>Sign Up</h3>
             <br />
-            <form>
+            <form id="form1" runat="server" action="SignUp.aspx">
+                <div class="mb-3">
+                    <asp:Label ID="error" Text="" runat="server"></asp:Label>
+                </div>
                 <div class="mb-3">
                 
-                    <input type="text" class="form-control" id="fullname" placeholder="Enter your full name">
+                    <asp:TextBox type="text" class="form-control" ID="fullname" placeholder="Enter your full name" runat="server"></asp:TextBox>
                 </div>
-                <div class="mb-3">
-                    
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email">
-                </div>
+     <div class="mb-3">
+    <asp:TextBox type="email" class="form-control" ID="email" placeholder="Enter your email" runat="server"></asp:TextBox>
+    <asp:Label ID="emailError" runat="server" ForeColor="Red" Visible="false" CssClass="d-block text-start" Font-Size="Small"></asp:Label>
+</div>
+
                 <div class="mb-3">
                    
-                    <input type="password" class="form-control" id="password" placeholder="Create a password">
+                    <asp:TextBox type="password" class="form-control" ID="password" placeholder="Create a password" runat="server"></asp:TextBox>
                 </div>
                  <div class="mb-3">
-    <select class="form-control">
-   <option>Select your role</option>
-       <option>Doctor</option>
-       <option>Patient</option>
-       <option>Admin</option>
+    <asp:DropDownList class="form-control" runat="server" ID="list">
+   <asp:ListItem Text="Select your role" Value=""/>
+       <asp:ListItem Text="Patient" Value="1"/>
+       <asp:ListItem Text="Doctor" Value="2"/>
+       
 
-   </select>
+   </asp:DropDownList>
  </div>
    
-                <button type="submit" class="btn btn-success w-100" onClick="Sign">Sign Up</button>
+<asp:Button class="btn btn-success w-100" ID="Si" runat="server" Text="Sign Up" OnClick="Si_Click" />
             </form>
             <p class="mt-3">Already have an account? <a href="Login.aspx">Login</a></p>
         </div>

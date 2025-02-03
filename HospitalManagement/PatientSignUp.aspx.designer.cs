@@ -11,7 +11,7 @@ namespace HospitalManagement
 {
 
 
-    public partial class SignUp
+    public partial class PatientSignUp
     {
 
         /// <summary>
@@ -33,57 +33,48 @@ namespace HospitalManagement
         protected global::System.Web.UI.WebControls.Label error;
 
         /// <summary>
-        /// fullname control.
+        /// drname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox fullname;
+        protected global::System.Web.UI.WebControls.TextBox drname;
 
         /// <summary>
-        /// email control.
+        /// dremail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox email;
+        protected global::System.Web.UI.WebControls.TextBox dremail;
 
         /// <summary>
-        /// emailError control.
+        /// phone control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label emailError;
+        protected global::System.Web.UI.WebControls.TextBox phone;
 
         /// <summary>
-        /// password control.
+        /// dateOfBirth control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox password;
+        protected global::System.Web.UI.WebControls.TextBox dateOfBirth;
 
         /// <summary>
-        /// list control.
+        /// registerPatient control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList list;
-
-        /// <summary>
-        /// Si control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button Si;
+        protected global::System.Web.UI.WebControls.Button registerPatient;
     }
 }
