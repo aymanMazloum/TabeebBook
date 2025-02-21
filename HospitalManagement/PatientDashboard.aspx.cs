@@ -46,7 +46,7 @@ namespace HospitalManagement
         {
             string connectionString = @"Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
             string query = "SELECT FullName, Email FROM Users WHERE Id = @UserId;";
-            string query2 = "SELECT Phone,DateOfBirth FROM Patients WHERE Id = @UserId;";
+            string query2 = "SELECT Phone,DateOfBirth FROM Patients WHERE UserId = @UserId;";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {

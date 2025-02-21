@@ -30,7 +30,7 @@ namespace HospitalManagement
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@Email", email);
-                    cmd.Parameters.AddWithValue("@Password", password); // ⚠ استخدم التشفير في المستقبل
+                    cmd.Parameters.AddWithValue("@Password", password);
 
                     try
                     {

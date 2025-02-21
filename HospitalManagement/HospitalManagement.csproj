@@ -80,8 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DoctorSignUp.aspx" />
-    <Content Include="Home.aspx" />
-    <Content Include="HomePatient.aspx" />
     <Content Include="Index.aspx" />
     <Content Include="Login.aspx" />
     <Content Include="PatientDashboard.aspx" />
@@ -97,20 +95,6 @@
     </Compile>
     <Compile Include="DoctorSignUp.aspx.designer.cs">
       <DependentUpon>DoctorSignUp.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Home.aspx.cs">
-      <DependentUpon>Home.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Home.aspx.designer.cs">
-      <DependentUpon>Home.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="HomePatient.aspx.cs">
-      <DependentUpon>HomePatient.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="HomePatient.aspx.designer.cs">
-      <DependentUpon>HomePatient.aspx</DependentUpon>
     </Compile>
     <Compile Include="Index.aspx.cs">
       <DependentUpon>Index.aspx</DependentUpon>
