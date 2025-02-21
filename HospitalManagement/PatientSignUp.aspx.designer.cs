@@ -33,22 +33,22 @@ namespace HospitalManagement
         protected global::System.Web.UI.WebControls.Label error;
 
         /// <summary>
-        /// drname control.
+        /// pname control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox drname;
+        protected global::System.Web.UI.WebControls.TextBox pname;
 
         /// <summary>
-        /// dremail control.
+        /// pemail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox dremail;
+        protected global::System.Web.UI.WebControls.TextBox pemail;
 
         /// <summary>
         /// phone control.

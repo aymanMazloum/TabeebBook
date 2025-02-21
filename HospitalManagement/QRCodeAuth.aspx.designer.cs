@@ -11,7 +11,7 @@ namespace HospitalManagement
 {
 
 
-    public partial class Login
+    public partial class QRCodeAuth
     {
 
         /// <summary>
@@ -24,31 +24,31 @@ namespace HospitalManagement
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// txtEmail control.
+        /// imgQRCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
+        protected global::System.Web.UI.WebControls.Image imgQRCode;
 
         /// <summary>
-        /// txtPassword control.
+        /// txtCode control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
+        protected global::System.Web.UI.WebControls.TextBox txtCode;
 
         /// <summary>
-        /// btnLogin control.
+        /// btnVerify control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLogin;
+        protected global::System.Web.UI.WebControls.Button btnVerify;
 
         /// <summary>
         /// lblMessage control.

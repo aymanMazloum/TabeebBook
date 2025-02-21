@@ -40,14 +40,17 @@
         <div class="card shadow p-4 text-center" style="width: 400px;">
             <h3>Login</h3>
             <br />
-            <form>
+            <form id="form1" runat="server">
                 <div class="mb-3">
-                    <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                    <asp:TextBox ID="txtEmail" runat="server" CssClass="form-control" Placeholder="Enter your email"></asp:TextBox>
                 </div>
-                    <input type="password" class="form-control" id="password" placeholder="Enter your password">
-               
-                <div class="mb-3"> </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
+                <div class="mb-3">
+                    <asp:TextBox ID="txtPassword" runat="server" CssClass="form-control" TextMode="Password" Placeholder="Enter your password"></asp:TextBox>
+                </div>
+                <div class="d-grid">
+                    <asp:Button ID="btnLogin" runat="server" Text="Login" CssClass="btn btn-primary w-100" OnClick="btnLogin_Click" />
+                </div>
+                <asp:Label ID="lblMessage" runat="server" CssClass="text-danger mt-2"></asp:Label>
             </form>
             <p class="mt-3">Don't have an account? <a href="SignUp.aspx">Sign up</a></p>
         </div>

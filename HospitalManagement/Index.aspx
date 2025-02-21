@@ -25,6 +25,10 @@
         .navbar-brand {
             font-weight: bold;
         }
+        .nav-link{
+         color:aliceblue;
+
+        }
     </style>
 </head>
 <body>

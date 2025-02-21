@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PatientSignUp.aspx.cs" Inherits="HospitalManagement.PatientSignUp" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DoctorSignUp.aspx.cs" Inherits="HospitalManagement.DoctorSignUp" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Sign Up - Hospital Management</title>
+    <title>Doctor Sign Up - Hospital Management</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -41,26 +41,34 @@
     
     <div class="container d-flex justify-content-center align-items-center flex-grow-1">
         <div class="card shadow p-4 text-center" style="width: 400px;">
-            <h3>Patient Sign Up</h3>
+            <h3>Doctor Sign Up</h3>
             <br />
-            <form id="form1" runat="server" action="patientSignUp.aspx">
+            <form id="form1" runat="server" action="DoctorSignUp.aspx">
                 <div class="mb-3">
                     <asp:Label ID="error" Text="" runat="server"></asp:Label>
                 </div>
                 <div class="mb-3">
-                    <asp:TextBox type="text" class="form-control" ID="pname" placeholder="Enter your full name" runat="server" ReadOnly="true" BackColor="LightGray" ></asp:TextBox>
+                    <asp:TextBox type="text" class="form-control" ID="drname" placeholder="Enter your full name" runat="server" ReadOnly="true"></asp:TextBox>
                 </div>
                 <div class="mb-3">
-                    <asp:TextBox type="email" class="form-control" ID="pemail" placeholder="Enter your email" runat="server" ReadOnly="true" BackColor="LightGray"></asp:TextBox>
+                    <asp:TextBox type="email" class="form-control" ID="dremail" placeholder="Enter your email" runat="server" ReadOnly="true"></asp:TextBox>
                 </div>
-              
+                              <div class="mb-3">
+   <asp:DropDownList class="form-control" runat="server" ID="list">
+  <asp:ListItem Text="Select your speciality" Value=""/>
+      <asp:ListItem Text="صحة" Value="1"/>
+      <asp:ListItem Text="نسائي" Value="2"/>
+      
+
+  </asp:DropDownList>
+</div>
                   <div class="mb-3">
       <asp:TextBox type="text" class="form-control" ID="phone" placeholder="Enter your phone number" runat="server"></asp:TextBox>
   </div>
   <div class="mb-3">
-      <asp:TextBox type="date" class="form-control" ID="dateOfBirth" runat="server"></asp:TextBox>
+      <asp:TextBox type="text" class="form-control" ID="onum" runat="server" placeholder="Enter your office number"></asp:TextBox>
   </div>
-                <asp:Button class="btn btn-success w-100" ID="registerPatient" runat="server" Text="Sign Up" OnClick="registerPatient_Click" />
+                <asp:Button class="btn btn-success w-100" ID="registerDoctor" runat="server" Text="Sign Up" OnClick="registerDoctor_Click" />
             </form>
             <p class="mt-3">Already have an account? <a href="Login.aspx">Login</a></p>
         </div>
