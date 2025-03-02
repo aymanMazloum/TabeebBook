@@ -87,6 +87,51 @@ namespace HospitalManagement
         protected global::System.Web.UI.WebControls.Button en;
 
         /// <summary>
+        /// PatientsView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View PatientsView;
+
+        /// <summary>
+        /// lblPatients control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblPatients;
+
+        /// <summary>
+        /// SearchPatientsTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox SearchPatientsTextBox;
+
+        /// <summary>
+        /// SearchPatientsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SearchPatientsButton;
+
+        /// <summary>
+        /// gvPatients control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvPatients;
+
+        /// <summary>
         /// AppointmentsView control.
         /// </summary>
         /// <remarks>

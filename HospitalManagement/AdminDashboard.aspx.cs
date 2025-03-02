@@ -24,10 +24,10 @@ namespace HospitalManagement
                 int id;
                 if (Session["Id"] != null && int.TryParse(Session["Id"].ToString(), out id))
                 {
+                    LoadAppointments();
 
                     LoadUserData(id);
-                    LoadAppointments();
-                    lblds.Text = "Search for doctors by their names or specialties:  \t";
+                    lblds.Text = "<h3>Search by Patient or Doctor or Speciality:</h3>";
                 }
                 else
                 {
@@ -152,22 +152,35 @@ namespace HospitalManagement
                 }
             }
         }
+        protected void SearchButton_Click(object sender, EventArgs e) {
+            LoadAppointments(SearchTextBox.Text);
+        }
 
-
-        private void LoadAppointments()
+        private void LoadAppointments(String t="")
         {
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = @"SELECT A.Id, P.FullName AS PatientName, A.AppointmentDate, A.Status
+                string query = @"SELECT 
+    A.Id, 
+    P.FullName AS PatientName, 
+    D.FullName AS DoctorName, 
+    DT.Speciality, 
+    A.AppointmentDate, 
+    A.Status
 FROM Appointments A
-JOIN Patients PA ON A.PatientId = PA.UserId
-JOIN Users P ON PA.UserId = P.Id
-ORDER BY A.AppointmentDate;
-                ";
+JOIN Patients PT ON A.PatientId = PT.UserId
+JOIN Users P ON PT.UserId = P.Id
+JOIN Doctors DT ON A.DoctorId = DT.UserId
+JOIN Users D ON DT.UserId = D.Id
+WHERE 
+    P.FullName LIKE @t OR 
+    D.FullName LIKE @t OR 
+    DT.Speciality LIKE @t 
+ORDER BY A.AppointmentDate;";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@DoctorId", Session["Id"]);
+                cmd.Parameters.AddWithValue("@t", "%"+t+"%");
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
@@ -176,9 +189,6 @@ ORDER BY A.AppointmentDate;
                 gvAppointments.DataBind();
             }
         }
-
-
-
 
         protected void btnChangePassword_Click(object sender, EventArgs e)
         {
@@ -235,6 +245,8 @@ ORDER BY A.AppointmentDate;
             Label1.Visible = true;
         }
 
+        
+       
 
         private string HashPassword(string password)
         {

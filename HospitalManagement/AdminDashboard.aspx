@@ -286,10 +286,11 @@ body {
             <h4 class="text-center">Admin Dashboard</h4><br /><br />
             <a onclick="ChangeView(0)"><i class="fas fa-home"></i>🏠 Home</a><hr />
             <a onclick="ChangeView(1)"><i class="fas fa-user"></i>👤 Profile</a><hr />
-            <a onclick="ChangeView(2)"><i class="fas fa-calendar-alt"></i>📅 Appointments</a><hr />
-            <a onclick="ChangeView(3)"><i class="fas fa-file-medical"></i>📂 Records</a><hr />
-            <a onclick="ChangeView(4)"><i class="fas fa-file-medical"></i>⚙️ Settings</a><hr />
-            <a onclick="ChangeView(5)"><i class="fas fa-sign-out-alt"></i>🚪 Logout</a>
+            <a onclick="ChangeView(2)"><i class="fas fa-calendar-alt"></i>🩺 Patients List</a><hr />
+            <a onclick="ChangeView(3)"><i class="fas fa-calendar-alt"></i>📅 Appointments</a><hr />
+            <a onclick="ChangeView(4)"><i class="fas fa-file-medical"></i>📂 Records</a><hr />
+            <a onclick="ChangeView(5)"><i class="fas fa-file-medical"></i>⚙️ Settings</a><hr />
+            <a onclick="ChangeView(6)"><i class="fas fa-sign-out-alt"></i>🚪 Logout</a>
         </div>
 
   
@@ -329,33 +330,63 @@ body {
         </div>
     </div>
 </asp:View>
+                <asp:View ID="PatientsView" runat="server">
+
+    <nav class="navbar navbar-expand-lg navbar-light navbar-primary">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <div class="ml-auto">
+                <div class="search-box">
+                    <h4><asp:Label runat="server" ID="lblPatients" ForeColor="White"></asp:Label></h4>
+                    <asp:TextBox ID="SearchPatientsTextBox" runat="server" CssClass="search-input" placeholder="Search here" />
+                    <asp:Button ID="SearchPatientsButton" runat="server" class="search-icon" Text="&#128269;" CssClass="btn"/>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <hr /><br /><h2>🩺 Patients List</h2><br />
+
+    <asp:GridView ID="gvPatients" runat="server" AutoGenerateColumns="False" CssClass="table table-striped" HeaderStyle-BackColor="#007bff" HeaderStyle-ForeColor="White">
+        <Columns>
+            <asp:BoundField DataField="Id" HeaderText="Patient ID" />
+            <asp:BoundField DataField="FullName" HeaderText="Patient Name" />
+            <asp:BoundField DataField="Email" HeaderText="Email" />
+            <asp:BoundField DataField="Phone" HeaderText="Phone" />
+            <asp:BoundField DataField="DateOfBirth" HeaderText="Date of Birth" DataFormatString="{0:yyyy-MM-dd}" />
+        </Columns>
+    </asp:GridView>
+
+</asp:View>
 
 
                 <asp:View ID="AppointmentsView" runat="server">
                     
                                         <nav class="navbar navbar-expand-lg navbar-light navbar-primary">
     
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse" id="navbar Nav">
         
         <div class="ml-auto">
             <div class="search-box">
                 <h4><asp:Label runat="server" ID="lblds" ForeColor="White"></asp:Label></h4>
 
                 <asp:TextBox ID="SearchTextBox" runat="server" CssClass="search-input" placeholder="Search here" />
-                <asp:Button ID="SearchButton" runat="server" class="search-icon" Text="&#128269;" CssClass="btn" />
+                <asp:Button ID="SearchButton" runat="server" class="search-icon" Text="&#128269;" CssClass="btn" OnClick="SearchButton_Click"/>
             </div>
         </div>
     </div>
 </nav>
            <hr /><br /><h2>📅Appointments</h2><br />
-                   <asp:GridView ID="gvAppointments" runat="server" AutoGenerateColumns="False" CssClass="table table-striped" HeaderStyle-BackColor="#007bff" HeaderStyle-ForeColor="White">
+                <asp:GridView ID="gvAppointments" runat="server" AutoGenerateColumns="False" CssClass="table table-striped" HeaderStyle-BackColor="#007bff" HeaderStyle-ForeColor="White">
     <Columns>
         <asp:BoundField DataField="Id" HeaderText="ID" />
         <asp:BoundField DataField="PatientName" HeaderText="Patient Name" />
-        <asp:BoundField DataField="AppointmentDate" HeaderText="Date & Time" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
+        <asp:BoundField DataField="DoctorName" HeaderText="Doctor Name" />
+        <asp:BoundField DataField="Speciality" HeaderText="Speciality" />
+        <asp:BoundField DataField="AppointmentDate" HeaderText="Date & Time" DataFormatString="{0:yyyy-MM-dd HH:mm}" />  
         <asp:BoundField DataField="Status" HeaderText="Status" />
     </Columns>
 </asp:GridView>
+
 
            </asp:View>
 
