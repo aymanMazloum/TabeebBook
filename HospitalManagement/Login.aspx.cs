@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.UI;
 
 namespace HospitalManagement
@@ -14,7 +16,7 @@ namespace HospitalManagement
         protected void btnLogin_Click(object sender, EventArgs e)
         {
             string email = txtEmail.Text.Trim();
-            string password = txtPassword.Text.Trim();
+            string password = HashPassword(txtPassword.Text.Trim());
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
@@ -23,7 +25,7 @@ namespace HospitalManagement
             }
 
             string connectionString = @"Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
-            string query = "SELECT Id FROM Users WHERE Email = @Email AND Password = @Password";
+            string query = "SELECT Id,Role FROM Users WHERE Email = @Email AND Password = @Password";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -35,17 +37,33 @@ namespace HospitalManagement
                     try
                     {
                         conn.Open();
-                        object result = cmd.ExecuteScalar();
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
 
-                        if (result != null)
-                        {
-                            int id = Convert.ToInt32(result);
-                            Session["Id"] = id;
-                            Response.Redirect("PatientDashboard.aspx");
-                        }
-                        else
-                        {
-                            lblMessage.Text = "Invalid username or password!";
+                            if (reader.Read())
+                            {
+                                int id = Convert.ToInt32(reader["Id"]);
+                                String role = reader["Role"].ToString();
+                                Session["Id"] = id;
+                                if (role == "Patient")
+                                {
+                                    Response.Redirect("PatientDashboard.aspx");
+                                }
+                                else if (role == "Doctor")
+                                {
+                                    Response.Redirect("DoctorDashboard.aspx");
+
+                                }
+                                else
+                                {
+                                    Response.Redirect("AdminDashboard.aspx");
+                                }
+
+                            }
+                            else
+                            {
+                                lblMessage.Text = "Invalid username or password!";
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -53,6 +71,16 @@ namespace HospitalManagement
                         lblMessage.Text = "Error: " + ex.Message;
                     }
                 }
+
+            }
+        }
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(password);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
         }
     }

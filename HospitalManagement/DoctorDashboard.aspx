@@ -1,11 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="PatientDashboard.aspx.cs" Inherits="HospitalManagement.PatientDashboard" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="DoctorDashboard.aspx.cs" Inherits="HospitalManagement.DoctorDashboard" %>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Dashboard</title>
+    <title>Doctor Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <style>
@@ -99,7 +99,7 @@
 .pp{
     width:500px;
     margin-left:250px;
-    margin-top:70px;
+    margin-top:80px;
     height:500px;
 }
 
@@ -190,12 +190,12 @@ margin-left: 220px;
     background: #388E3C;
 }
 
-.doctor-selector {
+.patient-selector {
     display: flex;
     gap: 10px;
 }
 
-.doctor-dropdown {
+.patient-dropdown {
     padding: 8px;
     border-radius: 5px;
     border: 1px solid #ddd;
@@ -255,7 +255,7 @@ body {
 }
 
 .spinner div:nth-child(2) {
-    animation-delay: 0.2s;
+    animation-delay: 0.2s; 
 }
 
 .spinner div:nth-child(3) {
@@ -267,38 +267,30 @@ body {
         transform: translateY(0);
     }
     100% {
-        transform: translateY(-15px); 
+        transform: translateY(-15px);
     }
 }
+
+
+
 
     </style>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    function refreshChat() {
-        $.ajax({
-            url: "DoctorDashboard.aspx?PatientID=" + '<%= Request.QueryString["PatientID"] %>',
-            type: "POST",
-            success: function (data) {
-                $("#chatBox").html($(data).find("#chatBox").html());
-            }
-        });
-    }
-    setInterval(refreshChat, 3000);
-</script>
 
 </head>
 <body>
     <form runat="server">
      
         <div class="sidebar overflow-auto">
-            <h4 class="text-center">Patient Dashboard</h4><br /><br />
+            <h4 class="text-center">Doctor Dashboard</h4><br /><br />
             <a onclick="ChangeView(0)"><i class="fas fa-home"></i>🏠 Home</a><hr />
             <a onclick="ChangeView(1)"><i class="fas fa-user"></i>👤 Profile</a><hr />
-            <a onclick="ChangeView(2)"><i class="fas fa-file-medical"></i>📂 Records</a><hr />
-            <a onclick="ChangeView(3)"><i class="fas fa-file-medical"></i>⚙️ Settings</a><hr />
-            <a onclick="ChangeView(4)"><i class="fas fa-file-medical"></i>💬 Chat</a><hr />
-            <a onclick="ChangeView(5)"><i class="fas fa-sign-out-alt"></i>🚪 Logout</a>
+            <a onclick="ChangeView(2)"><i class="fas fa-calendar-alt"></i>📅 Appointments</a><hr />
+            <a onclick="ChangeView(3)"><i class="fas fa-file-medical"></i>📂 Records</a><hr />
+            <a onclick="ChangeView(4)"><i class="fas fa-file-medical"></i>⚙️ Settings</a><hr />
+            <a onclick="ChangeView(5)"><i class="fas fa-file-medical"></i>💬 Chat</a><hr />
+            <a onclick="ChangeView(6)"><i class="fas fa-sign-out-alt"></i>🚪 Logout</a>
         </div>
 
   
@@ -308,40 +300,32 @@ body {
             
                 <asp:View ID="HomeView" runat="server">
                     <div style="width:1000px;">
-
-                    <h1 runat="server" id="pp" style="font-size:70px;">Welcome, </h1>
-                   <br /><br /><hr /></div>
-                        <div class="container mt-4">
-<br /><br />
-    <div class="row">
-
-        <div class="col-md-6">
-            <div class="card shadow p-4 bbb">
-                <h2 class="text-secondary">📋 My Appointments</h2>
-                <asp:GridView ID="gvAppointments" runat="server" CssClass="table table-hover table-bordered text-center" AutoGenerateColumns="False">
-                    <Columns>
-                        <asp:BoundField DataField="DoctorName" HeaderText="Doctor" />
-                        <asp:BoundField DataField="AppointmentDate" HeaderText="Date and Time" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
-                        <asp:BoundField DataField="Status" HeaderText="Status" />
-                    </Columns>
-                </asp:GridView>
-            </div>
-        </div>
-    </div>
-</div>
+                     <h1 runat="server" id="pp" style="font-size:70px;">Welcome Dr. </h1>
+                     <br /><br /><hr />
+                    </div>
                 </asp:View>
 
                 <asp:View ID="ProfileView" runat="server">
     <div class="container mt-4">
-        <div class="card shadow-lg p-4" style="width:800px;height:780px;margin-left:110px;">
+        <div class="card shadow-lg p-4" style="width:800px;height:850px;margin-left:110px;">
             <h3 class="text-center mb-4">Profile Information</h3>
             <div class="text-center mb-4">
-                <asp:Image ID="imgProfilePicture" runat="server" CssClass="img-fluid rounded-circle" style="width: 175px; height: 170px;" />
+                <asp:Image ID="imgProfilePicture" runat="server" CssClass="img-fluid rounded-circle" style="width: 180px; height: 170px;" />
             </div>
             <div class="mb-3">
                 <label for="txtFullName" class="form-label">Full Name:</label>
                 <asp:TextBox ID="txtFullName" runat="server" CssClass="form-control" Placeholder="Enter your full name" Enabled="false"></asp:TextBox>
             </div>
+            <br />
+            <div class="mb-3">
+                <label for="txtEmail" class="form-label">Email:</label>
+                <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" CssClass="form-control" Placeholder="Enter your email" Enabled="false"></asp:TextBox>
+            </div>
+            <br />
+            <div class="mb-3">
+    <label for="spec" class="form-label">Speciality:</label>
+    <asp:TextBox ID="spec" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
+</div>
             <br />
             <div class="mb-3">
                 <label for="txtPhoneNumber" class="form-label">Phone Number:</label>
@@ -350,16 +334,12 @@ body {
                         <br />
 
             <div class="mb-3">
-                <label for="txtBirthDate" class="form-label">Date of Birth:</label>
-                <asp:TextBox ID="txtBirthDate" runat="server" TextMode="Date" CssClass="form-control" Enabled="false"></asp:TextBox>
+                <label for="onum" class="form-label">Office Number:</label>
+                <asp:TextBox ID="onum" runat="server" CssClass="form-control" Enabled="false"></asp:TextBox>
             </div>
                         <br />
 
-            <div class="mb-3">
-                <label for="txtEmail" class="form-label">Email:</label>
-                <asp:TextBox ID="txtEmail" runat="server" TextMode="Email" CssClass="form-control" Placeholder="Enter your email" Enabled="false"></asp:TextBox>
-            </div>
-            <br />
+            
             <div class="text-center">
                 <asp:Button ID="btnUpdate" runat="server" Text="Save" CssClass="btn btn-primary" OnClick="btnUpdate_Click"/>
                 <asp:Button ID="en" runat="server" Text="Update" CssClass="btn btn-primary" OnClick="en_Click"/>
@@ -370,50 +350,53 @@ body {
 </asp:View>
 
 
+                <asp:View ID="AppointmentsView" runat="server">
+                    <h2>📅 Appointments</h2>
+                   <asp:GridView ID="gvAppointments" runat="server" AutoGenerateColumns="False" CssClass="table table-striped" HeaderStyle-BackColor="#007bff" HeaderStyle-ForeColor="White">
+    <Columns>
+        <asp:BoundField DataField="Id" HeaderText="ID" />
+        <asp:BoundField DataField="PatientName" HeaderText="Patient Name" />
+        <asp:BoundField DataField="AppointmentDate" HeaderText="Date & Time" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
+        <asp:BoundField DataField="Status" HeaderText="Status" />
+    </Columns>
+</asp:GridView>
+
+                </asp:View>
+
+
+
+
+
+
+
+
+
 
                 <asp:View ID="RecordsView" runat="server">
-                <div class="col-md-6 pp">
-    <div class="card shadow p-4">
-        <h4 class="text-secondary">📌 Book Appointment</h4>
-        <br /><br />
-         <div class="mb-3">
-     <label for="spec" class="form-label fw-bold">Choose Speciality:</label>
-    <asp:DropDownList ID="spec" runat="server" CssClass="form-select" AutoPostBack="true"
-    OnSelectedIndexChanged="LoadDoctorS">
-    <asp:ListItem Text="Select your speciality" Value="" />
-    <asp:ListItem Text="Cardiologist" Value="Cardiologist"/>
-    <asp:ListItem Text="Dermatology" Value="Dermatology"/>
-    <asp:ListItem Text="Neurology" Value="Neurology"/>
-    <asp:ListItem Text="Orthopedics" Value="Orthopedics"/>
-    <asp:ListItem Text="Pediatrics" Value="Pediatrics"/>
-    <asp:ListItem Text="Ophthalmology" Value="Ophthalmology"/>
-    <asp:ListItem Text="Psychiatry" Value="Psychiatry"/>
-    <asp:ListItem Text="General Surgery" Value="General Surgery"/>
-</asp:DropDownList>
+                <nav class="navbar navbar-expand-lg navbar-light navbar-primary">
+                    
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        
+                        <div class="ml-auto">
+                            <div class="search-box">
+                                <h4><asp:Label runat="server" ID="lblds" ForeColor="White"></asp:Label></h4>
 
-
- </div><br />
-        <div class="mb-3">
-            <label for="ddlDoctors" class="form-label fw-bold">Choose Doctor:</label>
-            <asp:DropDownList ID="ddlDoctors" runat="server" CssClass="form-select"></asp:DropDownList>
-        </div><br />
-        <div class="mb-3">
-            <label for="txtAppointmentDate" class="form-label fw-bold">Choose Date and Time:</label>
-            <asp:TextBox ID="txtAppointmentDate" runat="server" CssClass="form-control" TextMode="DateTimeLocal"></asp:TextBox>
-        </div><br />
-        <div class="d-grid">
-            <asp:Button ID="btnBook" runat="server" CssClass="btn btn-primary btn-lg" Text="Book Appointment" OnClick="btnBook_Click" />
-        </div>
-        <asp:Label ID="lblMessage" runat="server" CssClass="text-success mt-3 fw-bold" Visible="false"></asp:Label>
-    </div>
-</div>
+                                <asp:TextBox ID="SearchTextBox" runat="server" CssClass="search-input" placeholder="Search here" />
+                                <asp:Button ID="SearchButton" runat="server" class="search-icon" Text="&#128269;" CssClass="btn" />
+                            </div>
+                        </div>
+                    </div>
+                </nav>
 
                 <div class="text-center mt-5">
                     
                 </div>
                 </asp:View>
 
-                   <asp:View ID="SettingsView" runat="server">
+
+
+
+                                  <asp:View ID="SettingsView" runat="server">
     <div class="container mt-4">
         <div class="mb-3 text-center" style="width:400px;margin-left:260px;">
     <button type="button" onclick="toggleDarkMode()" class="btn btn-dark">
@@ -449,19 +432,23 @@ body {
     </div>
 </asp:View>
 
-           <asp:View ID="ChatView" runat="server">
-    <div class="doctor-selector">
-        <asp:DropDownList ID="ddlDoctors1" runat="server" CssClass="doctor-dropdown" OnSelectedIndexChanged="btnLoadDoctorChat_Click"></asp:DropDownList>
-        <asp:Button ID="btnLoadDoctorChat" runat="server" Text="🔍 Load Chat" CssClass="btn-load-chat" OnClick="btnLoadDoctorChat_Click" />
-    </div>
 
+      <asp:View ID="ChatView" runat="server">
+          <div class="patient-selector">
+    <asp:DropDownList ID="ddlPatients" runat="server" CssClass="patient-dropdown" OnSelectedIndexChanged="btnLoadChat_Click"></asp:DropDownList>
+    <asp:Button ID="btnLoadChat" runat="server" Text="🔍 Load Chat" CssClass="btn-load-chat" OnClick="btnLoadChat_Click" />
+</div>
     <div class="chat-container">
-        <div class="chat-header" style="border-bottom: 2px white dashed;background:#007bff">
-            <asp:Label runat="server" ID="ChatWithDoctor" Font-Size="30px" ForeColor="White" BackColor="#007bff"></asp:Label>
+
+        <div class="chat-header" style="border-bottom: 2px white dashed;background:#007bff;">
+            
+
+        <asp:Label runat="server" ID="ChatWithPatient" Font-Size="30px" ForeColor="White" BackColor="#007bff"></asp:Label>
+
         </div>
 
-        <div class="chat-box" id="doctorChatBox" runat="server" ClientIDMode="Static">
-            <asp:Repeater ID="rptDoctorChatMessages" runat="server">
+        <div class="chat-box" id="chatBox" runat="server" ClientIDMode="Static">
+            <asp:Repeater ID="rptChatMessages" runat="server">
                 <ItemTemplate>
                     <div class="chat-message <%# Eval("SenderID").ToString() == Session["Id"].ToString() ? "sent" : "received" %>">
                         <span class="chat-text"><%# Eval("MessageText") %></span>
@@ -472,8 +459,8 @@ body {
         </div>
 
         <div class="chat-input">
-            <asp:TextBox ID="txtDoctorMessage" runat="server" CssClass="chat-textbox" Placeholder="Type your message..."></asp:TextBox>
-            <asp:Button ID="btnSendDoctor" runat="server" Text="Send" CssClass="chat-send-btn" OnClick="btnSend_Click" />
+            <asp:TextBox ID="txtMessage" runat="server" CssClass="chat-textbox" Placeholder="Type your message..."></asp:TextBox>
+            <asp:Button ID="btnSend" runat="server" Text="Send" CssClass="chat-send-btn" OnClick="btnSend_Click" />
         </div>
     </div>
 </asp:View>
@@ -481,7 +468,7 @@ body {
 
 
 
-                  <asp:View ID="LogoutView" runat="server">
+   <asp:View ID="LogoutView" runat="server">
     <div class="container d-flex justify-content-center align-items-center mt-5" style="margin-top:150px;margin-left:140px;width:750px;height:500px;">
         <div class="card shadow-lg p-4 text-center" style="width: 400px; border-radius: 15px;">
             <h2 class="mb-3 text-danger fw-bold">Are you sure you want to logout?</h2>
@@ -518,6 +505,9 @@ body {
 </div>
 
 </asp:View>
+
+
+
 
             </asp:MultiView>
 
@@ -568,22 +558,24 @@ body {
         setTimeout("preventBack()", 0);
         window.onunload = function () { null };
     </script>
-   
-     <script>
-         function logout() {
-             var blackout = document.getElementById("blackout");
-             blackout.style.opacity = "1";
-             blackout.style.pointerEvents = "auto";
+   <script>
+       function logout() {
+           var blackout = document.getElementById("blackout");
+           blackout.style.opacity = "1";
+           blackout.style.pointerEvents = "auto";
 
-             setTimeout(function () {
-                 document.getElementById('<%= signout.ClientID %>').click();
+           setTimeout(function () {
+               document.getElementById('<%= signout.ClientID %>').click();
 
-             window.location.href = "Login.aspx";
-         }, 2000);
+        window.location.href = "Login.aspx";
+    }, 2000);
 
-             return false;
-         }
-     </script>
+           return false;
+       }
+   </script>
+
+
 
 </body>
+
 </html>

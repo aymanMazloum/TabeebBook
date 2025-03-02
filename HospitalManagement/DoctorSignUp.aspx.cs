@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -53,7 +55,7 @@ namespace HospitalManagement
                     SqlCommand cmd = new SqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@FullName", Session["fullname"].ToString());
                     cmd.Parameters.AddWithValue("@Email", Session["email"].ToString());
-                    cmd.Parameters.AddWithValue("@Password", Session["pass"].ToString());
+                    cmd.Parameters.AddWithValue("@Password", HashPassword(Session["pass"].ToString()));
                     cmd.Parameters.AddWithValue("@Role", Session["role"].ToString());
                     cmd.Parameters.Add("@ProfileImage", System.Data.SqlDbType.VarBinary).Value = imgBytes;
 
@@ -75,6 +77,17 @@ namespace HospitalManagement
                 {
                     error.Text = "An error occurred: " + ex.Message;
                 }
+            }
+        }
+
+
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = Encoding.UTF8.GetBytes(password);
+                byte[] hashBytes = sha256.ComputeHash(bytes);
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
         }
     }

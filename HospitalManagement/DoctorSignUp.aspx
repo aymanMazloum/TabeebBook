@@ -48,17 +48,22 @@
                     <asp:Label ID="error" Text="" runat="server"></asp:Label>
                 </div>
                 <div class="mb-3">
-                    <asp:TextBox type="text" class="form-control" ID="drname" placeholder="Enter your full name" runat="server" ReadOnly="true"></asp:TextBox>
+                    <asp:TextBox type="text" class="form-control" ID="drname" placeholder="Enter your full name" runat="server" ReadOnly="true" BackColor="LightGray"></asp:TextBox>
                 </div>
                 <div class="mb-3">
-                    <asp:TextBox type="email" class="form-control" ID="dremail" placeholder="Enter your email" runat="server" ReadOnly="true"></asp:TextBox>
+                    <asp:TextBox type="email" class="form-control" ID="dremail" placeholder="Enter your email" runat="server" ReadOnly="true" BackColor="LightGray"></asp:TextBox>
                 </div>
                               <div class="mb-3">
    <asp:DropDownList class="form-control" runat="server" ID="list">
   <asp:ListItem Text="Select your speciality" Value=""/>
-      <asp:ListItem Text="صحة" Value="1"/>
-      <asp:ListItem Text="نسائي" Value="2"/>
-      
+     <asp:ListItem Text="Cardiologist" Value="1"/>
+     <asp:ListItem Text="Dermatology" Value="2"/>
+      <asp:ListItem Text="Neurology" Value="3"/>
+      <asp:ListItem Text="Orthopedics " Value="4"/>
+      <asp:ListItem Text="Pediatrics" Value="5"/>
+      <asp:ListItem Text="Ophthalmology" Value="6"/>
+      <asp:ListItem Text="Psychiatry" Value="7"/>
+      <asp:ListItem Text="General Surgery" Value="8"/>
 
   </asp:DropDownList>
 </div>

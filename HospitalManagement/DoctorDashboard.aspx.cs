@@ -6,15 +6,15 @@ using System.Web.UI;
 using ZXing;
 using System.Data;
 using static ZXing.QrCode.Internal.Mode;
+using System.Web.UI.WebControls;
 using System.Security.Cryptography;
 using System.Text;
-using System.Web.UI.WebControls;
 
 namespace HospitalManagement
 {
-    public partial class PatientDashboard : Page
+    public partial class DoctorDashboard : Page
     {
-        string connectionString = @"Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
+        string connectionString = "Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,12 +25,11 @@ namespace HospitalManagement
                 int id;
                 if (Session["Id"] != null && int.TryParse(Session["Id"].ToString(), out id))
                 {
-                    LoadDoctors();
-                    Label1.Visible = false;
-                    LoadUserData(id);
-                    LoadDoctorChatMessages();
+                    LoadPatients();
 
+                    LoadUserData(id);
                     LoadAppointments();
+                    lblds.Text = "Search for doctors by their names or specialties:  \t";
                 }
                 else
                 {
@@ -46,7 +45,7 @@ namespace HospitalManagement
             {
                 MainMultiView.ActiveViewIndex = selectedView;
             }
-        } 
+        }
 
         protected void signout_Click(object sender, EventArgs e)
         {
@@ -61,16 +60,15 @@ namespace HospitalManagement
 
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
-
             string query = @"
         UPDATE Users
         SET FullName = @FullName, Email = @Email
         FROM Users 
         WHERE Id = @UserId;
 
-        UPDATE Patients
-        SET Phone = @Phone, DateOfBirth = @DateOfBirth
-        FROM Patients
+        UPDATE Doctors
+        SET Phone = @Phone, OfficeNumber = @onum
+        FROM Doctors
         WHERE UserId = @UserId;
     ";
 
@@ -80,8 +78,9 @@ namespace HospitalManagement
                 {
                     cmd.Parameters.AddWithValue("@FullName", txtFullName.Text);
                     cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                    cmd.Parameters.AddWithValue("@Speciality", spec.Text);
                     cmd.Parameters.AddWithValue("@Phone", txtPhoneNumber.Text);
-                    cmd.Parameters.AddWithValue("@DateOfBirth", txtBirthDate.Text);
+                    cmd.Parameters.AddWithValue("@onum", onum.Text);
                     cmd.Parameters.AddWithValue("@UserId", Session["Id"]);
 
                     try
@@ -106,29 +105,31 @@ namespace HospitalManagement
             txtFullName.Enabled = false;
             txtEmail.Enabled = false;
             txtPhoneNumber.Enabled = false;
-            txtBirthDate.Enabled = false;
+            onum.Enabled = false;
+            spec.Enabled = false;
         }
 
         protected void en_Click(object sender, EventArgs e)
         {
+            spec.Enabled = true;
             txtFullName.Enabled = true;
             txtEmail.Enabled = true;
-            txtBirthDate.Enabled = true;
+            onum.Enabled = true;
             txtPhoneNumber.Enabled = true;
 
         }
         private void LoadUserData(int userID)
         {
-            string connectionString = @"Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
             string query = @"
         SELECT 
             u.FullName, 
             u.Email, 
             u.ProfileImage,
-            p.Phone, 
-            CONVERT(varchar, p.DateOfBirth, 23) AS DateOfBirth 
+            d.Speciality,
+            d.Phone, 
+            d.OfficeNumber
         FROM Users u
-        INNER JOIN Patients p ON u.Id = p.UserId
+        INNER JOIN Doctors d ON u.Id = d.UserId
         WHERE u.Id = @UserId;";
 
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -147,8 +148,8 @@ namespace HospitalManagement
                                 txtFullName.Text = reader["FullName"].ToString();
                                 txtEmail.Text = reader["Email"].ToString();
                                 txtPhoneNumber.Text = reader["Phone"].ToString();
-                                txtBirthDate.Text = reader["DateOfBirth"].ToString();
-
+                                spec.Text = reader["Speciality"].ToString();
+                                onum.Text = reader["OfficeNumber"].ToString();
                                 byte[] imageData = reader["ProfileImage"] as byte[];
                                 if (imageData != null)
                                 {
@@ -172,9 +173,8 @@ namespace HospitalManagement
                                         y += x[i];
                                     }
                                 }
-                                pp.InnerText += y+ " 👋";
+                                pp.InnerText += y + " 👋";
                             }
-
                         }
                     }
                     catch (Exception ex)
@@ -185,48 +185,9 @@ namespace HospitalManagement
             }
         }
 
-
-        protected void btnLoadDoctorChat_Click(object sender, EventArgs e)
-        {
-            Session["SelectedDoctorID"] = ddlDoctors1.SelectedValue;
-            Session["DoctorName"] = ddlDoctors1.SelectedItem.ToString();
-
-            if (ddlDoctors1.SelectedItem.ToString() == "-- Select a Doctor --")
-            {
-                ChatWithDoctor.Text = "<i style='margin-left:40px;color:white;text-shadow:-2px -2px 0 black,2px -2px 0 black,-2px  2px 0 black, 2px  2px 0 black;font-size:20px;font-weight:bold;'>Please Select a Doctor to Load his/her Messages</i>";
-            }
-            else
-            {
-                ChatWithDoctor.Text = "💬 Chat with Doctor: " + Session["DoctorName"];
-            }
-            LoadDoctorChatMessages();
-        }
-
-        private void LoadDoctorChatMessages()
-        {
-            string doctorId = Session["SelectedDoctorID"]?.ToString();
-            if (string.IsNullOrEmpty(doctorId)) return;
-
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = "SELECT * FROM Messages WHERE (SenderID = @UserID AND ReceiverID = @DoctorID) OR (ReceiverID = @UserID AND SenderID = @DoctorID)";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@UserID", Session["Id"]);
-                cmd.Parameters.AddWithValue("@DoctorID", Session["SelectedDoctorID"]);
-
-                SqlDataAdapter da = new SqlDataAdapter(cmd);
-                DataTable dt = new DataTable();
-                da.Fill(dt);
-
-                rptDoctorChatMessages.DataSource = dt;
-                rptDoctorChatMessages.DataBind();
-            }
-        }
-
-
         protected void btnSend_Click(object sender, EventArgs e)
         {
-            string message = txtDoctorMessage.Text.Trim();
+            string message = txtMessage.Text.Trim();
 
             if (!string.IsNullOrEmpty(message) && Session["Id"] != null)
             {
@@ -237,7 +198,7 @@ namespace HospitalManagement
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
                         cmd.Parameters.AddWithValue("@SenderID", Convert.ToInt32(Session["Id"]));
-                        cmd.Parameters.AddWithValue("@ReceiverID", Convert.ToInt32(Session["SelectedDoctorID"].ToString()));
+                        cmd.Parameters.AddWithValue("@ReceiverID", Convert.ToInt32(Session["SelectedPatientID"].ToString()));
                         cmd.Parameters.AddWithValue("@MessageText", message);
                         cmd.Parameters.AddWithValue("@Timestamp", DateTime.Now);
 
@@ -246,121 +207,39 @@ namespace HospitalManagement
                     }
                 }
 
-                txtDoctorMessage.Text = "";
-                LoadDoctorChatMessages();
+                txtMessage.Text = "";
+                LoadChatMessages();
 
                 ClientScript.RegisterStartupScript(this.GetType(), "scrollToBottom", "scrollToBottom();", true);
             }
         }
 
-
-        private void LoadDoctors()
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = @"
-        SELECT U.Id AS UserId, U.FullName AS DoctorName
-        FROM Users U
-        INNER JOIN Doctors D ON U.Id = D.UserId";
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    conn.Open();
-                    ddlDoctors1.DataSource = cmd.ExecuteReader();
-                    ddlDoctors1.DataTextField = "DoctorName";
-                    ddlDoctors1.DataValueField = "UserId";
-                    ddlDoctors1.DataBind();
-                }
-            }
-            ddlDoctors1.Items.Insert(0, new ListItem("-- Select a Doctor --", "0"));
-        }
-        protected void LoadDoctorS(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                string query = @"
-        SELECT U.Id AS UserId, U.FullName AS DoctorName
-        FROM Users U
-        INNER JOIN Doctors D ON U.Id = D.UserId 
-        WHERE D.Speciality = @Speciality"; 
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Speciality", spec.SelectedItem.Text);
-                    conn.Open();
-                    ddlDoctors.DataSource = cmd.ExecuteReader();
-                    ddlDoctors.DataTextField = "DoctorName";
-                    ddlDoctors.DataValueField = "UserId";
-                    ddlDoctors.DataBind();
-                }
-            }
-
-            ddlDoctors.Items.Insert(0, new ListItem("-- Select a Doctor --", "0"));
-        }
-
-
-
         private void LoadAppointments()
         {
-            string connString = "Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connString))
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                string query = @"SELECT u.FullName AS DoctorName, a.AppointmentDate, a.Status 
-                             FROM Appointments a
-                             JOIN Doctors d ON a.DoctorId = d.UserId
-                             JOIN Users u ON d.UserId = u.Id
-                             WHERE a.PatientId = @PatientId";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@PatientId", Session["Id"].ToString());
-                    conn.Open();
-                    SqlDataAdapter da = new SqlDataAdapter(cmd);
-                    DataTable dt = new DataTable();
-                    da.Fill(dt);
-                    gvAppointments.DataSource = dt;
-                    gvAppointments.DataBind();
-                }
+                string query = @"SELECT A.Id, P.FullName AS PatientName, A.AppointmentDate, A.Status
+FROM Appointments A
+JOIN Patients PA ON A.PatientId = PA.UserId
+JOIN Users P ON PA.UserId = P.Id
+WHERE A.DoctorId = @DoctorId
+ORDER BY A.AppointmentDate;
+                ";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@DoctorId", Session["Id"]);
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                gvAppointments.DataSource = dt;
+                gvAppointments.DataBind();
             }
         }
 
-        protected void btnBook_Click(object sender, EventArgs e)
-        {
-            int doctorId = int.Parse(ddlDoctors.SelectedValue);
-            int patientId = Convert.ToInt32(Session["Id"].ToString());
-            DateTime appointmentDate = DateTime.Parse(txtAppointmentDate.Text);
-
-            string connString = "Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
-            using (SqlConnection conn = new SqlConnection(connString))
-            {
-                string query = "INSERT INTO Appointments (DoctorId, PatientId, AppointmentDate, Status) VALUES (@DoctorId, @PatientId, @AppointmentDate, 'Scheduled')";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@DoctorId", doctorId);
-                    cmd.Parameters.AddWithValue("@PatientId", patientId);
-                    cmd.Parameters.AddWithValue("@AppointmentDate", appointmentDate);
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    lblMessage.Text = "Appointment Added Sucessfully!";
-                    lblMessage.Visible = true;
-
-                    LoadAppointments();
-                }
-            }
-            txtAppointmentDate.Text = "";
-        }
 
 
-
-
-
-
-
-
-   
-       
-       
-      
 
         protected void btnChangePassword_Click(object sender, EventArgs e)
         {
@@ -377,7 +256,6 @@ namespace HospitalManagement
                 return;
             }
 
-            string connectionString = "Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
@@ -386,8 +264,17 @@ namespace HospitalManagement
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@Id", id);
                 string storedHashedPassword = cmd.ExecuteScalar()?.ToString();
-         
-                string hashedOldPassword = HashPassword(oldPassword);
+
+                if (storedHashedPassword == null)
+                {
+                    Label1.Text = "❌ Email not found!";
+                    Label1.CssClass = "text-danger";
+                    Label1.Visible = true;
+                    return;
+                }
+
+
+                string hashedOldPassword = oldPassword;
                 if (storedHashedPassword != hashedOldPassword)
                 {
                     Label1.Text = "❌ Incorrect current password!";
@@ -409,8 +296,62 @@ namespace HospitalManagement
             Label1.Visible = true;
         }
 
-     
+        protected void btnLoadChat_Click(object sender, EventArgs e)
+        {
+            Session["SelectedPatientID"] = ddlPatients.SelectedValue;
+            Session["PatientName"] = ddlPatients.SelectedItem.ToString();
 
+            if (ddlPatients.SelectedItem.ToString() == "-- Select a Patient --")
+            {
+
+
+                ChatWithPatient.Text = "<i style=margin-left:40px;color:white;text-shadow:-2px -2px 0 black,2px -2px 0 black,-2px  2px 0 black, 2px  2px 0 black;font-size:20px;font-weight:bold;>Please Select a Patient to Load his/her Messages</i>";
+            }
+            else { ChatWithPatient.Text = "💬 Chat with Patient: " + Session["PatientName"]; }
+            LoadChatMessages();
+        }
+
+        private void LoadChatMessages()
+        {
+            string patientId = Session["SelectedPatientID"]?.ToString();
+            if (string.IsNullOrEmpty(patientId)) return;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT * FROM Messages WHERE SenderID = @UserID AND ReceiverID = @PatientID OR ReceiverID = @UserID AND SenderID = @PatientID";
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@UserID", Session["Id"]);
+                cmd.Parameters.AddWithValue("@PatientID", Session["SelectedPatientID"]);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                rptChatMessages.DataSource = dt;
+                rptChatMessages.DataBind();
+            }
+        }
+        private void LoadPatients()
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"
+            SELECT U.Id AS UserId, U.FullName AS PatientName
+            FROM Users U
+            INNER JOIN Patients P ON U.Id = P.UserId";
+
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    ddlPatients.DataSource = cmd.ExecuteReader();
+                    ddlPatients.DataTextField = "PatientName";
+                    ddlPatients.DataValueField = "UserId";
+                    ddlPatients.DataBind();
+
+                }
+            }
+            ddlPatients.Items.Insert(0, new ListItem("-- Select a Patient --", "0"));
+        }
 
         private string HashPassword(string password)
         {
@@ -421,9 +362,6 @@ namespace HospitalManagement
                 return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
         }
-
-
-   
     }
-
 }
+

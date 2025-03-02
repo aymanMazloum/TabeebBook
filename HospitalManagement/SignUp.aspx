@@ -49,14 +49,14 @@
                     <asp:Label ID="error" Text="" runat="server"></asp:Label>
                 </div>
                 <div class="mb-3">
-                    <asp:TextBox type="text" class="form-control" ID="fullname" placeholder="Enter your full name" runat="server"></asp:TextBox>
+                    <asp:TextBox class="form-control" ID="fullname" placeholder="Enter your full name" runat="server"></asp:TextBox>
                 </div>
                 <div class="mb-3">
-                    <asp:TextBox type="email" class="form-control ee" ID="email" placeholder="Enter your email" runat="server"></asp:TextBox>
+                    <asp:TextBox TextMode="Email" class="form-control ee" ID="email" placeholder="Enter your email" runat="server"></asp:TextBox>
                     <asp:Label ID="emailError" runat="server" ForeColor="Red" Visible="false" CssClass="d-block text-start" Font-Size="Small"></asp:Label>
                 </div>
                 <div class="mb-3">
-                    <asp:TextBox type="password" class="form-control" ID="password" placeholder="Create a password" runat="server"></asp:TextBox>
+                    <asp:TextBox class="form-control" ID="password" placeholder="Create a password" runat="server" TextMode="Password"></asp:TextBox>
                 </div>
                 <div class="mb-3">
                     <asp:DropDownList class="form-control" runat="server" ID="list">
