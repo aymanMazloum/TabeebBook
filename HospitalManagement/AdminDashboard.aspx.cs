@@ -25,9 +25,12 @@ namespace HospitalManagement
                 if (Session["Id"] != null && int.TryParse(Session["Id"].ToString(), out id))
                 {
                     LoadAppointments();
-
+                    LoadPatients();
+                    LoadDoctors();
                     LoadUserData(id);
                     lblds.Text = "<h3>Search by Patient or Doctor or Speciality:</h3>";
+                    lblPatients.Text = "<h3>Search by Patient or Phone or Email:</h3>";
+                    lblDoctors.Text = "<h4>Search by Patient or Email or Phone or Speciality:</h4>";
                 }
                 else
                 {
@@ -245,8 +248,60 @@ ORDER BY A.AppointmentDate;";
             Label1.Visible = true;
         }
 
-        
-       
+
+
+        private void LoadPatients(string search = "")
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT P.UserId Id, U.FullName, U.Email, P.Phone, P.DateOfBirth
+                         FROM Patients P
+                         JOIN Users U ON P.UserId = U.Id
+                         WHERE U.FullName LIKE @search OR P.Phone LIKE @search OR U.Email LIKE @search";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@search", "%" + search + "%");
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                gvPatients.DataSource = dt;
+                gvPatients.DataBind();
+            }
+        }
+        protected void SearchPatientsButton_Click(object sender, EventArgs e)
+        {
+            string searchText = SearchPatientsTextBox.Text.Trim();
+            LoadPatients(searchText);
+        }
+
+        private void LoadDoctors(string search = "")
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = @"SELECT D.UserId Id, U.FullName, U.Email, D.Phone, D.Speciality
+                         FROM Doctors D
+                         JOIN Users U ON D.UserId = U.Id
+                         WHERE U.FullName LIKE @search OR D.Phone LIKE @search OR U.Email LIKE @search OR D.Speciality LIKE @search";
+
+                SqlCommand cmd = new SqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@search", "%" + search + "%");
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                gvDoctors.DataSource = dt;
+                gvDoctors.DataBind();
+            }
+        }
+
+
+        protected void SearchDoctorsButton_Click(object sender, EventArgs e)
+        {
+            string searchText = SearchDoctorsTextBox.Text.Trim();
+            LoadDoctors(searchText);
+        }
+
 
         private string HashPassword(string password)
         {

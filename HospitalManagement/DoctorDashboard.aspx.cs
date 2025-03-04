@@ -29,7 +29,6 @@ namespace HospitalManagement
 
                     LoadUserData(id);
                     LoadAppointments();
-                    lblds.Text = "Search for doctors by their names or specialties:  \t";
                 }
                 else
                 {
@@ -111,7 +110,6 @@ namespace HospitalManagement
 
         protected void en_Click(object sender, EventArgs e)
         {
-            spec.Enabled = true;
             txtFullName.Enabled = true;
             txtEmail.Enabled = true;
             onum.Enabled = true;
@@ -352,6 +350,55 @@ ORDER BY A.AppointmentDate;
             }
             ddlPatients.Items.Insert(0, new ListItem("-- Select a Patient --", "0"));
         }
+
+        protected void btnUpdateStatus_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            GridViewRow row = (GridViewRow)btn.NamingContainer;
+
+            DropDownList ddlStatus = (DropDownList)row.FindControl("ddlStatus");
+
+            int appointmentId = Convert.ToInt32(btn.CommandArgument);
+            string newStatus = ddlStatus.SelectedValue;
+
+            string connString = "Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string query = "UPDATE Appointments SET Status = @NewStatus WHERE Id = @AppointmentId";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@NewStatus", newStatus);
+                    cmd.Parameters.AddWithValue("@AppointmentId", appointmentId);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            LoadAppointments();
+        }
+
+        protected void btnDeleteAppointment_Click(object sender, EventArgs e)
+        {
+            Button btn = (Button)sender;
+            int appointmentId = Convert.ToInt32(btn.CommandArgument);
+
+            string connString = "Server=DESKTOP-S9UBL8M;Database=HospitalManagement;Integrated Security=True";
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                string query = "DELETE FROM Appointments WHERE Id = @AppointmentId";
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@AppointmentId", appointmentId);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            LoadAppointments();
+        }
+
 
         private string HashPassword(string password)
         {

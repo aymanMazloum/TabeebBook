@@ -287,10 +287,9 @@ body {
             <a onclick="ChangeView(0)"><i class="fas fa-home"></i>🏠 Home</a><hr />
             <a onclick="ChangeView(1)"><i class="fas fa-user"></i>👤 Profile</a><hr />
             <a onclick="ChangeView(2)"><i class="fas fa-calendar-alt"></i>📅 Appointments</a><hr />
-            <a onclick="ChangeView(3)"><i class="fas fa-file-medical"></i>📂 Records</a><hr />
-            <a onclick="ChangeView(4)"><i class="fas fa-file-medical"></i>⚙️ Settings</a><hr />
-            <a onclick="ChangeView(5)"><i class="fas fa-file-medical"></i>💬 Chat</a><hr />
-            <a onclick="ChangeView(6)"><i class="fas fa-sign-out-alt"></i>🚪 Logout</a>
+            <a onclick="ChangeView(3)"><i class="fas fa-file-medical"></i>⚙️ Settings</a><hr />
+            <a onclick="ChangeView(4)"><i class="fas fa-file-medical"></i>💬 Chat</a><hr />
+            <a onclick="ChangeView(5)"><i class="fas fa-sign-out-alt"></i>🚪 Logout</a>
         </div>
 
   
@@ -307,10 +306,10 @@ body {
 
                 <asp:View ID="ProfileView" runat="server">
     <div class="container mt-4">
-        <div class="card shadow-lg p-4" style="width:800px;height:850px;margin-left:110px;">
+        <div class="card shadow-lg p-4" style="width:800px;height:890px;margin-left:110px;">
             <h3 class="text-center mb-4">Profile Information</h3>
             <div class="text-center mb-4">
-                <asp:Image ID="imgProfilePicture" runat="server" CssClass="img-fluid rounded-circle" style="width: 180px; height: 170px;" />
+                <asp:Image ID="imgProfilePicture" runat="server" CssClass="img-fluid rounded-circle" style="width: 200px; height: 175px;" />
             </div>
             <div class="mb-3">
                 <label for="txtFullName" class="form-label">Full Name:</label>
@@ -351,47 +350,46 @@ body {
 
 
                 <asp:View ID="AppointmentsView" runat="server">
-                    <h2>📅 Appointments</h2>
-                   <asp:GridView ID="gvAppointments" runat="server" AutoGenerateColumns="False" CssClass="table table-striped" HeaderStyle-BackColor="#007bff" HeaderStyle-ForeColor="White">
+                   <div style="width:1055px;"> <h2>📅 Appointments</h2><br />
+                  <asp:GridView ID="gvAppointments" runat="server" AutoGenerateColumns="False" CssClass="table table-striped"
+    HeaderStyle-BackColor="#007bff" HeaderStyle-ForeColor="White">
     <Columns>
         <asp:BoundField DataField="Id" HeaderText="ID" />
         <asp:BoundField DataField="PatientName" HeaderText="Patient Name" />
         <asp:BoundField DataField="AppointmentDate" HeaderText="Date & Time" DataFormatString="{0:yyyy-MM-dd HH:mm}" />
         <asp:BoundField DataField="Status" HeaderText="Status" />
+
+        <asp:TemplateField HeaderText="Change Status">
+            <ItemTemplate>
+                <asp:DropDownList ID="ddlStatus" runat="server">
+                    <asp:ListItem Text="Scheduled" Value="Scheduled" />
+                    <asp:ListItem Text="Completed" Value="Completed" />
+                    <asp:ListItem Text="Cancelled" Value="Cancelled" />
+                    
+                </asp:DropDownList>
+                    </ItemTemplate>
+</asp:TemplateField>
+                <asp:TemplateField HeaderText="Actions">
+    <ItemTemplate>
+                <asp:Button ID="btnUpdateStatus" runat="server" Text="Update" CssClass="btn btn-primary btn-sm"
+                    CommandArgument='<%# Eval("Id") %>' OnClick="btnUpdateStatus_Click" />
+
+                <asp:Button ID="btnDeleteAppointment" runat="server" Text="Delete" CssClass="btn btn-danger btn-sm"
+                    CommandArgument='<%# Eval("Id") %>' OnClick="btnDeleteAppointment_Click"
+                    OnClientClick="return confirm('Are you sure you want to delete this appointment?');" />
+            </ItemTemplate>
+        </asp:TemplateField>
+
     </Columns>
 </asp:GridView>
 
+</div>
+
                 </asp:View>
 
 
 
 
-
-
-
-
-
-
-                <asp:View ID="RecordsView" runat="server">
-                <nav class="navbar navbar-expand-lg navbar-light navbar-primary">
-                    
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        
-                        <div class="ml-auto">
-                            <div class="search-box">
-                                <h4><asp:Label runat="server" ID="lblds" ForeColor="White"></asp:Label></h4>
-
-                                <asp:TextBox ID="SearchTextBox" runat="server" CssClass="search-input" placeholder="Search here" />
-                                <asp:Button ID="SearchButton" runat="server" class="search-icon" Text="&#128269;" CssClass="btn" />
-                            </div>
-                        </div>
-                    </div>
-                </nav>
-
-                <div class="text-center mt-5">
-                    
-                </div>
-                </asp:View>
 
 
 

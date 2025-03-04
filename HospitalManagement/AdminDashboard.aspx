@@ -287,8 +287,8 @@ body {
             <a onclick="ChangeView(0)"><i class="fas fa-home"></i>🏠 Home</a><hr />
             <a onclick="ChangeView(1)"><i class="fas fa-user"></i>👤 Profile</a><hr />
             <a onclick="ChangeView(2)"><i class="fas fa-calendar-alt"></i>🩺 Patients List</a><hr />
-            <a onclick="ChangeView(3)"><i class="fas fa-calendar-alt"></i>📅 Appointments</a><hr />
-            <a onclick="ChangeView(4)"><i class="fas fa-file-medical"></i>📂 Records</a><hr />
+            <a onclick="ChangeView(3)"><i class="fas fa-calendar-alt"></i>👨‍⚕️ Doctors List</a><hr />
+            <a onclick="ChangeView(4)"><i class="fas fa-calendar-alt"></i>📅 Appointments</a><hr />
             <a onclick="ChangeView(5)"><i class="fas fa-file-medical"></i>⚙️ Settings</a><hr />
             <a onclick="ChangeView(6)"><i class="fas fa-sign-out-alt"></i>🚪 Logout</a>
         </div>
@@ -338,7 +338,7 @@ body {
                 <div class="search-box">
                     <h4><asp:Label runat="server" ID="lblPatients" ForeColor="White"></asp:Label></h4>
                     <asp:TextBox ID="SearchPatientsTextBox" runat="server" CssClass="search-input" placeholder="Search here" />
-                    <asp:Button ID="SearchPatientsButton" runat="server" class="search-icon" Text="&#128269;" CssClass="btn"/>
+                    <asp:Button ID="SearchPatientsButton" runat="server" class="search-icon" Text="&#128269;" CssClass="btn" OnClick="SearchPatientsButton_Click"/>
                 </div>
             </div>
         </div>
@@ -357,6 +357,39 @@ body {
     </asp:GridView>
 
 </asp:View>
+
+
+
+                <asp:View ID="DoctorsView" runat="server">
+
+    <nav class="navbar navbar-expand-lg navbar-light navbar-primary">
+        <div class="collapse navbar-collapse">
+            <div class="ml-auto">
+                <div class="search-box">
+                    <h4><asp:Label runat="server" ID="lblDoctors" ForeColor="White"></asp:Label></h4>
+                    <asp:TextBox ID="SearchDoctorsTextBox" runat="server" CssClass="search-input" placeholder="Search here" />
+                    <asp:Button ID="SearchDoctorsButton" runat="server" class="search-icon" Text="&#128269;" CssClass="btn" OnClick="SearchDoctorsButton_Click"/>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <hr /><br /><h2>👨‍⚕️ Doctors List</h2><br />
+
+    <asp:GridView ID="gvDoctors" runat="server" AutoGenerateColumns="False" CssClass="table table-striped" HeaderStyle-BackColor="#007bff" HeaderStyle-ForeColor="White">
+        <Columns>
+            <asp:BoundField DataField="Id" HeaderText="Doctor ID" />
+            <asp:BoundField DataField="FullName" HeaderText="Doctor Name" />
+            <asp:BoundField DataField="Email" HeaderText="Email" />
+            <asp:BoundField DataField="Phone" HeaderText="Phone" />
+            <asp:BoundField DataField="Speciality" HeaderText="Speciality" />
+        </Columns>
+    </asp:GridView>
+
+</asp:View>
+
+
+
 
 
                 <asp:View ID="AppointmentsView" runat="server">
