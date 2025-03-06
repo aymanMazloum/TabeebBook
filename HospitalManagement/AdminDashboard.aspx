@@ -431,22 +431,6 @@ body {
 
 
 
-
-                <asp:View ID="RecordsView" runat="server">
-                              <div class="patient-selector">
-    <asp:DropDownList ID="ddlPatients" runat="server" CssClass="patient-dropdown"></asp:DropDownList>
-    <asp:Button ID="btnLoadChat" runat="server" Text="🔍 Load Chat" CssClass="btn-load-chat"/>
-</div>
-               
-
-                <div class="text-center mt-5">
-                    
-                </div>
-                </asp:View>
-
-
-
-
                                   <asp:View ID="SettingsView" runat="server">
     <div class="container mt-4">
         <div class="mb-3 text-center" style="width:400px;margin-left:260px;">

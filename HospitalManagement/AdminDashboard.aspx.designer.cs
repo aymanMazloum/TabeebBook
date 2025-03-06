@@ -222,33 +222,6 @@ namespace HospitalManagement
         protected global::System.Web.UI.WebControls.GridView gvAppointments;
 
         /// <summary>
-        /// RecordsView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.View RecordsView;
-
-        /// <summary>
-        /// ddlPatients control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlPatients;
-
-        /// <summary>
-        /// btnLoadChat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnLoadChat;
-
-        /// <summary>
         /// SettingsView control.
         /// </summary>
         /// <remarks>

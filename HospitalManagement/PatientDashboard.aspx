@@ -336,7 +336,7 @@ body {
         <div class="card shadow-lg p-4" style="width:800px;height:780px;margin-left:110px;">
             <h3 class="text-center mb-4">Profile Information</h3>
             <div class="text-center mb-4">
-                <asp:Image ID="imgProfilePicture" runat="server" CssClass="img-fluid rounded-circle" style="width: 175px; height: 170px;" />
+                <asp:Image ID="imgProfilePicture" runat="server" CssClass="img-fluid rounded-circle" style="width: 200px; height: 175px;" />
             </div>
             <div class="mb-3">
                 <label for="txtFullName" class="form-label">Full Name:</label>
@@ -542,6 +542,7 @@ body {
             elements.forEach(el => {
                 if (isDark) {
                     el.classList.add("dark-theme");
+
                 } else {
                     el.classList.remove("dark-theme");
                 }
